@@ -1,4 +1,8 @@
 package lk.ijse.gdse68.aad.CropMonitoringSystem.customObj;
 
-public class StaffErrorResponse {
+import java.io.Serializable;
+
+public class StaffErrorResponse implements StaffResponse, Serializable {
+    private int errorCode;
+    private String errorMessage;
 }

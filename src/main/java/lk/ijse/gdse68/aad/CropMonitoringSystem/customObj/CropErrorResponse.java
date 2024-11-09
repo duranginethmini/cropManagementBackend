@@ -1,4 +1,8 @@
 package lk.ijse.gdse68.aad.CropMonitoringSystem.customObj;
 
-public class CropErrorResponse {
+import java.io.Serializable;
+
+public class CropErrorResponse implements CropResponse, Serializable {
+    private int errorCode;
+    private String errorMessage;
 }
