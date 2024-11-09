@@ -1,4 +1,18 @@
 package lk.ijse.gdse68.aad.CropMonitoringSystem.dto;
 
-public class VehicleDTO {
+import lk.ijse.gdse68.aad.CropMonitoringSystem.customObj.VehicleResponse;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+@AllArgsConstructor
+@NoArgsConstructor
+@Data
+public class VehicleDTO implements SuperDTO, VehicleResponse {
+    private String vehicleCode;
+    private String licensePlate;
+    private String category;
+    private String fuelType;
+    private String status;
+    private String remarks;
 }
