@@ -1,12 +1,12 @@
 package lk.ijse.gdse68.aad.CropMonitoringSystem.dto;
 
 import lk.ijse.gdse68.aad.CropMonitoringSystem.customObj.VehicleResponse;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
+@Getter
+@Setter
 @Data
 public class VehicleDTO implements SuperDTO, VehicleResponse {
     private String vehicleCode;
