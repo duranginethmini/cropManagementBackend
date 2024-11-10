@@ -14,6 +14,10 @@ public class AppUtil {
     public  static String createVehicleId(){
         return "Vehicle" + UUID.randomUUID().toString();
     }
+
+    public  static String createEquipmentId(){
+        return "Equip" + UUID.randomUUID().toString();
+    }
     public static String toBase64Image(MultipartFile profilepic){
         String profilepicBase64=null;
         try{
