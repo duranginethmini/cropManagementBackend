@@ -53,7 +53,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     public void updateEquipment(String id, EquipmentDTO equipmentDTO) {
         Optional<EquipmentEntity> byId = equipmentDAO.findById(id);
         if (!byId.isPresent()){
-            throw new VehicleNotFoundException("Couldn't fount the Equipment!");
+            throw new EquipmentNotFoundException("Couldn't find the Equipment!");
         }else {
             byId.get().setEquipmentName(equipmentDTO.getEquipmentName());
             byId.get().setStatus(equipmentDTO.getStatus());
@@ -66,7 +66,7 @@ public class EquipmentServiceImpl implements EquipmentService {
     public void deleteEquipment(String id) {
         Optional<EquipmentEntity> byId = equipmentDAO.findById(id);
         if (!byId.isPresent()){
-            throw new DataPersistentException("Couldn't found the equipment!");
+            throw new DataPersistentException("Couldn't find the equipment!");
         }else {
             equipmentDAO.deleteById(id);
         }

@@ -8,7 +8,7 @@ import java.util.List;
 public interface CropService {
     void addCrops(CropDTO cropDTO);
 
-    List<CropDTO> getAllCropsByIt ();
+    List<CropDTO> getAllCropsById ();
 
     CropResponse getSelectedCrops (String id);
 

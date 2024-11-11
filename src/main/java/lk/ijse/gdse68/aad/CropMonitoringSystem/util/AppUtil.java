@@ -2,6 +2,7 @@ package lk.ijse.gdse68.aad.CropMonitoringSystem.util;
 
 import org.springframework.web.multipart.MultipartFile;
 
+import java.io.IOException;
 import java.util.Base64;
 import java.util.Random;
 import java.util.UUID;
@@ -18,14 +19,32 @@ public class AppUtil {
     public  static String createEquipmentId(){
         return "Equip" + UUID.randomUUID().toString();
     }
-    public static String toBase64Image(MultipartFile profilepic){
-        String profilepicBase64=null;
-        try{
-            byte [] imagebyteCollection= profilepic.getBytes();
-            profilepicBase64= Base64.getEncoder().encodeToString(imagebyteCollection);
-        }catch (Exception e){
-            e.printStackTrace();
-        }
-        return profilepicBase64;
+    public  static String createStaffId(){
+        return "Staff" + UUID.randomUUID().toString();
+    }
+
+    public static String createFieldId(){return "Field" + UUID.randomUUID().toString();}
+//    public static String toBase64Image(MultipartFile profilepic){
+//        String profilepicBase64=null;
+//        try{
+//            byte [] imagebyteCollection= profilepic.getBytes();
+//            profilepicBase64= Base64.getEncoder().encodeToString(imagebyteCollection);
+//        }catch (Exception e){
+//            e.printStackTrace();
+//        }
+//        return profilepicBase64;
+//    }
+   public static String toBase64Image(MultipartFile file) {
+    try {
+        byte[] imageBytes = file.getBytes();
+        return Base64.getEncoder().encodeToString(imageBytes);
+    } catch (IOException e) {
+        e.printStackTrace();
+        return null;
+    }
+}
+
+    public static String toBase64ProfilePic(byte [] profilePic){
+        return Base64.getEncoder().encodeToString(profilePic);
     }
 }

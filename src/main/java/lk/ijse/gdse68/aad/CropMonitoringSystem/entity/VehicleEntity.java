@@ -21,6 +21,6 @@ public class VehicleEntity implements SuperEntity{
     private String status;
     private String remarks;
 
-    @OneToMany(mappedBy = "vehicleEntity")
+    @OneToMany(mappedBy = "vehicleEntity",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
     private List<StaffEntity> assignedDriver;
 }

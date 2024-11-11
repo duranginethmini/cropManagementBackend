@@ -21,7 +21,7 @@ public class StaffEntity implements SuperEntity{
     private String designation;
     private String gender;
     private LocalDate joinDate;
-    private LocalDate DOB;
+    private LocalDate dob;
     private String buildingNo;
     private String lane;
     private String city;
