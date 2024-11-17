@@ -1,6 +1,12 @@
 package lk.ijse.gdse68.aad.CropMonitoringSystem.util;
 
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.io.WKTReader;
+import org.springframework.data.geo.Point;
 import org.springframework.web.multipart.MultipartFile;
+import org.springframework.data.geo.Point;
+
 
 import java.io.IOException;
 import java.util.Base64;
@@ -24,16 +30,8 @@ public class AppUtil {
     }
 
     public static String createFieldId(){return "Field" + UUID.randomUUID().toString();}
-//    public static String toBase64Image(MultipartFile profilepic){
-//        String profilepicBase64=null;
-//        try{
-//            byte [] imagebyteCollection= profilepic.getBytes();
-//            profilepicBase64= Base64.getEncoder().encodeToString(imagebyteCollection);
-//        }catch (Exception e){
-//            e.printStackTrace();
-//        }
-//        return profilepicBase64;
-//    }
+    public static String createLogId(){return "Log" + UUID.randomUUID().toString();}
+
    public static String toBase64Image(MultipartFile file) {
     try {
         byte[] imageBytes = file.getBytes();
@@ -43,6 +41,10 @@ public class AppUtil {
         return null;
     }
 }
+
+
+
+
 
     public static String toBase64ProfilePic(byte [] profilePic){
         return Base64.getEncoder().encodeToString(profilePic);

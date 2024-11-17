@@ -8,7 +8,8 @@ import lk.ijse.gdse68.aad.CropMonitoringSystem.dto.StaffDTO;
 import java.util.List;
 
 public interface FieldService {
-    void addFields(FieldDTO fieldDTO);
+    //void addFields(FieldDTO fieldDTO);
+    String addFields(FieldDTO fieldDTO);
 
     List<FieldDTO> getAllFields ();
 

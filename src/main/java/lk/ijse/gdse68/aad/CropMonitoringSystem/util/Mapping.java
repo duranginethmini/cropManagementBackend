@@ -1,8 +1,12 @@
 package lk.ijse.gdse68.aad.CropMonitoringSystem.util;
 
 
+import lk.ijse.gdse68.aad.CropMonitoringSystem.dao.EquipmentDAO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dto.*;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.*;
+import org.locationtech.jts.geom.Coordinate;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.modelmapper.ModelMapper;
 import org.modelmapper.TypeToken;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +18,9 @@ import java.util.List;
 public class Mapping {
     @Autowired
     public ModelMapper modelMapper;
+
+    @Autowired
+    private EquipmentDAO equipmentDAO;
 
     //crop
     public CropDTO convertToDTO(CropEntity entity) {
@@ -44,7 +51,7 @@ public class Mapping {
         return modelMapper.map(entity,FieldDTO.class);
     }
     public FieldEntity convertToEntity(FieldDTO dto) {
-        return modelMapper.map(dto, FieldEntity.class);
+           return modelMapper.map(dto,FieldEntity.class);
     }
     public List<FieldDTO> convertF_EntityListToDTOList(List<FieldEntity> fields) {
         return modelMapper.map(fields, new TypeToken<List<FieldDTO>>(){}.getType());

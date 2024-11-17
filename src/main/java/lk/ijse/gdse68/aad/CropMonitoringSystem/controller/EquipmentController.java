@@ -3,9 +3,7 @@ package lk.ijse.gdse68.aad.CropMonitoringSystem.controller;
 
 import lk.ijse.gdse68.aad.CropMonitoringSystem.customObj.EquipmentResponse;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dto.EquipmentDTO;
-import lk.ijse.gdse68.aad.CropMonitoringSystem.dto.VehicleDTO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.EquipmentNotFoundException;
-import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.VehicleNotFoundException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.service.EquipmentService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;

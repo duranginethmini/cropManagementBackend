@@ -5,15 +5,18 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.awt.*;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Data
 public class FieldDTO implements SuperDTO, FieldResponse {
+
     private String fieldCode;
     private String fieldName;
-    private Double extentSize;
-    private String fieldLocation;
-    private String image1;
-    private String image2;
+    private Point fieldLocation;
+    private double fieldSize;
+    private String fieldImage1;
+    private String fieldImage2;
     private String equipmentCode;
 }

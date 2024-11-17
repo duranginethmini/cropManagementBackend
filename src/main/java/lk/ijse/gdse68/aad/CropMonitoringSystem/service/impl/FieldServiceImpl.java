@@ -9,6 +9,8 @@ import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.DataPersistentException
 import lk.ijse.gdse68.aad.CropMonitoringSystem.service.FieldService;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.util.AppUtil;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.util.Mapping;
+import org.locationtech.jts.geom.GeometryFactory;
+import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -23,14 +25,30 @@ public class FieldServiceImpl implements FieldService {
 
     @Autowired
     private Mapping mapping;
-    @Override
-    public void addFields(FieldDTO fieldDTO) {
-      fieldDTO.setFieldCode(AppUtil.createFieldId());
-        FieldEntity save = fieldDAO.save(mapping.convertToEntity(fieldDTO));
-        if (save == null && save.getFieldCode()==null){
-            throw new DataPersistentException("Couldn't save Field details!");
-        }
+//    @Override
+//    public void addFields(FieldDTO fieldDTO) {
+//      fieldDTO.setFieldCode(AppUtil.createFieldId());
+//        FieldEntity save = fieldDAO.save(mapping.convertToEntity(fieldDTO));
+//        if (save == null && save.getFieldCode()==null){
+//            throw new DataPersistentException("Couldn't save Field details!");
+//        }
+//    }
+@Override
+public String addFields(FieldDTO fieldDTO) {
+    fieldDTO.setFieldCode(AppUtil.createFieldId());
+    FieldEntity save = fieldDAO.save(mapping.convertToEntity(fieldDTO));
+
+    // Check if saving failed or if the field code is null
+    if (save == null || save.getFieldCode() == null) {
+        return "Couldn't save Field details!";
     }
+
+    // Return a success message if saving was successful
+    return "Field added successfully with code: " + save.getFieldCode();
+
+
+}
+
 
     @Override
     public List<FieldDTO> getAllFields() {
