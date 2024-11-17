@@ -1,8 +1,12 @@
 package lk.ijse.gdse68.aad.CropMonitoringSystem.controller;
 
 
+import lk.ijse.gdse68.aad.CropMonitoringSystem.customObj.MonitoringLogResponse;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dto.MonitoringLogDTO;
+import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.MonitoringLogEntity;
+import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.CropNotFoundException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.DataPersistentException;
+import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.FieldNotFoundException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.MonitoringLogNotFoundException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.service.MonitoringLogService;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.util.AppUtil;
@@ -47,6 +51,10 @@ public class MonitoringLogController {
         }
     }
 
+    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public MonitoringLogResponse getLogsByID (@PathVariable ("id") String id){
+        return monitoringLogService.getSelectedLogs(id);
+    }
     @PatchMapping(value = "/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> updateMonitoringLogs(@PathVariable ("id") String id,
                                                      @RequestParam ("logDate") @DateTimeFormat (pattern = "yyyy-MM-dd")Date date,
@@ -74,6 +82,19 @@ public class MonitoringLogController {
     public List<MonitoringLogDTO> getAllLogs(){
         return monitoringLogService.getAllLogs();
         }
+
+        @DeleteMapping(value = "/{id}")
+   public ResponseEntity <Void> deleteLogs (@PathVariable ("id") String id) {
+            try {
+                monitoringLogService.deleteLogs(id);
+                return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+            }catch (MonitoringLogNotFoundException e){
+                return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+            }catch (Exception e){
+                return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+            }
+        }
+
     }
 
 

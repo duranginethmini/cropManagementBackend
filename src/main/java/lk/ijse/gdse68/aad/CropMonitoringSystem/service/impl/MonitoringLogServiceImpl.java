@@ -5,8 +5,10 @@ import lk.ijse.gdse68.aad.CropMonitoringSystem.customObj.MonitoringLogResponse;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dao.FieldDAO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dao.MonitoringLogDAO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dto.MonitoringLogDTO;
+import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.CropEntity;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.FieldEntity;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.MonitoringLogEntity;
+import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.CropNotFoundException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.DataPersistentException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.FieldNotFoundException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.MonitoringLogNotFoundException;
@@ -49,7 +51,11 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
 
     @Override
     public MonitoringLogResponse getSelectedLogs(String id) {
-        return null;
+        if (monitoringLogDAO.existsById(id)){
+            return mapping.convertMLogEntityToDto(monitoringLogDAO.getReferenceById(id));
+        }else {
+            throw new MonitoringLogNotFoundException("There is no such Logs available");
+        }
     }
 
     @Override
@@ -78,6 +84,11 @@ public class MonitoringLogServiceImpl implements MonitoringLogService {
 
     @Override
     public void deleteLogs(String id) {
-
+        Optional<MonitoringLogEntity> byId = monitoringLogDAO.findById(id);
+        if (!byId.isPresent()){
+            throw new MonitoringLogNotFoundException("Log by this Id does not exist!");
+        }else {
+            monitoringLogDAO.deleteById(id);
+        }
     }
 }
