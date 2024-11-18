@@ -40,7 +40,7 @@ public class StaffEntity implements SuperEntity{
 
     @ManyToOne
     @JoinColumn(name ="equipmentCode")
-    private EquipmentEntity staff;
+    private EquipmentEntity equipmentEntity;
 
     @ManyToOne
     @JoinColumn(name = "vehicleCode")

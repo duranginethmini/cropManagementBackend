@@ -32,26 +32,32 @@ public class StaffServiceImpl implements StaffService {
     @Override
    public void addStaffMembers(StaffDTO staffDTO) {
 
-            // Generate a unique staffId
         staffDTO.setStaffId(AppUtil.createStaffId());
 
-    // Convert DTO to Entity
-    StaffEntity staffEntity = mapping.convertToEntity(staffDTO);
+        // Convert DTO to Entity
+        StaffEntity staffEntity = mapping.convertToEntity(staffDTO);
 
-    // Fetch the VehicleEntity if vehicleCode is provided
-    if (staffDTO.getVehicleCode() != null) {
-        VehicleEntity vehicleEntity = vehicleDAO.findById(staffDTO.getVehicleCode())
-                .orElseThrow(() -> new DataPersistentException("Vehicle with code " + staffDTO.getVehicleCode() + " not found!"));
-        staffEntity.setVehicleEntity(vehicleEntity);
-    }
+        // Fetch and set the EquipmentEntity if equipmentCode is provided
+        if (staffDTO.getEquipmentCode() != null) {
+            EquipmentEntity equipmentEntity = equipmentDAO.findById(staffDTO.getEquipmentCode())
+                    .orElseThrow(() -> new EquipmentNotFoundException("Equipment with code " + staffDTO.getEquipmentCode() + " not found!"));
+            staffEntity.setEquipmentEntity(equipmentEntity);
+        }
 
-    // Save the StaffEntity
-    StaffEntity savedEntity = staffDAO.save(staffEntity);
+        // Fetch and set the VehicleEntity if vehicleCode is provided
+        if (staffDTO.getVehicleCode() != null) {
+            VehicleEntity vehicleEntity = vehicleDAO.findById(staffDTO.getVehicleCode())
+                    .orElseThrow(() -> new DataPersistentException("Vehicle with code " + staffDTO.getVehicleCode() + " not found!"));
+            staffEntity.setVehicleEntity(vehicleEntity);
+        }
 
-    // Check if saving was successful
-    if (savedEntity == null || savedEntity.getStaffId() == null) {
-        throw new DataPersistentException("Error occurred while staff persistent!");
-    }
+        // Save the StaffEntity
+        StaffEntity savedEntity = staffDAO.save(staffEntity);
+
+        // Check if saving was successful
+        if (savedEntity == null || savedEntity.getStaffId() == null) {
+            throw new DataPersistentException("Error occurred while staff persistent!");
+        }
     }
 
     @Override
@@ -96,7 +102,7 @@ public class StaffServiceImpl implements StaffService {
             if (!equipment.isPresent()) {
                 throw new EquipmentNotFoundException("Equipment not found for equipmentCode: " + staffDTO.getEquipmentCode());
             }
-            staffEntity.setStaff(equipment.get());
+            staffEntity.setEquipmentEntity(equipment.get());
 
             // Fetch and set the VehicleEntity based on vehicleCode
             Optional<VehicleEntity> vehicle = vehicleDAO.findById(staffDTO.getVehicleCode());

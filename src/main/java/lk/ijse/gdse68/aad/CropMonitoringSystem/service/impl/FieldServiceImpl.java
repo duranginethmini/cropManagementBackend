@@ -87,7 +87,7 @@ public String addFields(FieldDTO fieldDTO) {
             if (!equipmentEntity.isPresent()) {
                 throw new FieldNotFoundException("Field not found for EquipmentCode: " + fieldDTO.getEquipmentCode());
             }
-            field.setField(equipmentEntity.get());
+            field.setEquipment(equipmentEntity.get());
 
             // Save the updated cropEntity back to the database
             fieldDAO.save(field);

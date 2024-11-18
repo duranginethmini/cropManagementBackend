@@ -1,5 +1,6 @@
 package lk.ijse.gdse68.aad.CropMonitoringSystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -29,12 +30,12 @@ public class FieldEntity implements SuperEntity{
     @Column(columnDefinition = "LONGTEXT")
     private String image2;  // Renamed from "fieldImage2"
 
-    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "field", cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<CropEntity> crops;
 
     @ManyToOne
     @JoinColumn(name = "equipmentCode")
-    private EquipmentEntity field;
+    private EquipmentEntity equipment;
 
     @ManyToMany
     @JoinTable(
@@ -45,6 +46,6 @@ public class FieldEntity implements SuperEntity{
     private List<StaffEntity> assignedStaff;
 
 //
-    @OneToMany(mappedBy = "field",cascade = CascadeType.ALL,fetch = FetchType.LAZY)
+    @OneToMany(mappedBy = "field",cascade = CascadeType.ALL,fetch = FetchType.EAGER)
     private List<MonitoringLogEntity> monitoringLogEntities;
 }
