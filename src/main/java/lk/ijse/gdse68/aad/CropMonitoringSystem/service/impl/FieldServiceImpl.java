@@ -4,11 +4,10 @@ import jakarta.transaction.Transactional;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.customObj.FieldResponse;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dao.EquipmentDAO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dao.FieldDAO;
+import lk.ijse.gdse68.aad.CropMonitoringSystem.dao.StaffDAO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dto.EquipmentDTO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dto.FieldDTO;
-import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.CropEntity;
-import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.EquipmentEntity;
-import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.FieldEntity;
+import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.*;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.CropNotFoundException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.DataPersistentException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.FieldNotFoundException;
@@ -32,6 +31,9 @@ public class FieldServiceImpl implements FieldService {
 
     @Autowired
     private EquipmentDAO equipmentDAO;
+
+    @Autowired
+    private StaffDAO staffDAO;
 
     @Autowired
     private Mapping mapping;
@@ -88,6 +90,13 @@ public String addFields(FieldDTO fieldDTO) {
                 throw new FieldNotFoundException("Field not found for EquipmentCode: " + fieldDTO.getEquipmentCode());
             }
             field.setEquipment(equipmentEntity.get());
+
+            if (fieldDTO.getStaffId() != null) {
+                // If you want to update multiple fields, you would need to use findAllById
+                List<StaffEntity> staffEntities =staffDAO .findAllById(fieldDTO.getStaffId());
+                field.setAssignedStaff(staffEntities);
+            }
+
 
             // Save the updated cropEntity back to the database
             fieldDAO.save(field);

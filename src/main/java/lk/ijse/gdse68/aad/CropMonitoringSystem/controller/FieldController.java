@@ -94,7 +94,8 @@ public class FieldController {
             @RequestParam("longitude") double longitude,
             @RequestParam("fieldImage1") MultipartFile fieldImage1,
             @RequestParam("fieldImage2") MultipartFile fieldImage2,
-            @RequestParam("equipmentCode") String equipmentCode
+            @RequestParam("equipmentCode") String equipmentCode,
+            @RequestParam("staffId")List<String> staffId
     ){
         try {
             byte[] imageByteCollection1 = fieldImage1.getBytes();
@@ -110,6 +111,7 @@ public class FieldController {
             fieldDTO.setFieldImage1(base64ProfilePic1);
             fieldDTO.setFieldImage2(base64ProfilePic2);
             fieldDTO.setEquipmentCode(equipmentCode);
+            fieldDTO.setStaffId(staffId);
             fieldService.updateField(id,fieldDTO);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (IOException e) {

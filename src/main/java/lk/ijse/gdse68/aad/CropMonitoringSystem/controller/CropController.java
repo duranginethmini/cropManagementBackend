@@ -7,6 +7,8 @@ import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.DataPersistentException
 import lk.ijse.gdse68.aad.CropMonitoringSystem.service.CropService;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.util.AppUtil;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,15 +25,16 @@ public class CropController {
 
     @Autowired
     private final CropService cropService;
+    static Logger logger = LoggerFactory.getLogger(CropController.class);
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> addCrop(
-            @RequestPart("commonName") String commonName,
-            @RequestPart("scientificName") String scientificName,
-            @RequestPart("image")MultipartFile image,
-            @RequestPart("category") String category,
-            @RequestPart("cropSeason")String cropSeason,
-            @RequestPart("fieldCode")String fieldCode
+            @RequestParam("commonName") String commonName,
+            @RequestParam("scientificName") String scientificName,
+            @RequestParam("image")MultipartFile image,
+            @RequestParam("category") String category,
+            @RequestParam("cropSeason")String cropSeason,
+            @RequestParam("fieldCode")String fieldCode
             ){
         try {
             String base64Image = AppUtil.toBase64Image(image);
@@ -45,6 +48,7 @@ public class CropController {
             cropService.addCrops(cropDTO);
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataPersistentException e){
+            logger.error("There was a error while updating");
             return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -58,12 +62,13 @@ public class CropController {
 
     @PutMapping (value = "/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity <Void> updateCrops (@PathVariable ("id") String id ,
-                                             @RequestPart("commonName") String commonName,
-                                             @RequestPart ("scientificName") String scientificName,
-                                             @RequestPart("image") MultipartFile image,
-                                             @RequestPart("category") String category,
-                                             @RequestPart("cropSeason") String cropSeason,
-                                              @RequestPart("fieldCode")String fieldCode
+                                             @RequestParam("commonName") String commonName,
+                                             @RequestParam ("scientificName") String scientificName,
+                                             @RequestParam("image") MultipartFile image,
+                                             @RequestParam("category") String category,
+                                             @RequestParam("cropSeason") String cropSeason,
+                                              @RequestParam("fieldCode")String fieldCode,
+                                             @RequestParam("logCode")List<String> logCode
     ){
         //return userSERVICE.updateUser(id,userDTO) ? new ResponseEntity<>(HttpStatus.NO_CONTENT) : new ResponseEntity<>(HttpStatus.NOT_FOUND);
         try {
@@ -76,6 +81,7 @@ public class CropController {
             cropDTO.setCategory(category);
             cropDTO.setCropSeason(cropSeason);
             cropDTO.setFieldCode(fieldCode);
+            cropDTO.setLogCode(logCode);
             cropService.updateCrops(id,cropDTO);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (CropNotFoundException e){

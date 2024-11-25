@@ -6,6 +6,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import java.time.LocalDate;
+import java.util.List;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -27,4 +28,6 @@ public class StaffDTO implements SuperDTO, StaffResponse {
     private String email;
     private String equipmentCode;
     private String vehicleCode;
+  //  private String fieldCode;
+    private List<String> logCode;
 }

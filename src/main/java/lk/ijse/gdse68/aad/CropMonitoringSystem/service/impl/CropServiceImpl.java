@@ -4,14 +4,13 @@ import jakarta.transaction.Transactional;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.customObj.CropResponse;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dao.CropDAO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dao.FieldDAO;
+import lk.ijse.gdse68.aad.CropMonitoringSystem.dao.MonitoringLogDAO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dto.CropDTO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.CropEntity;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.EquipmentEntity;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.FieldEntity;
-import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.CropNotFoundException;
-import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.DataPersistentException;
-import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.FieldNotFoundException;
-import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.VehicleNotFoundException;
+import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.MonitoringLogEntity;
+import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.*;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.service.CropService;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.util.AppUtil;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.util.Mapping;
@@ -30,6 +29,9 @@ public class CropServiceImpl implements CropService {
 
     @Autowired
     private FieldDAO fieldDAO;
+
+    @Autowired
+    private MonitoringLogDAO monitoringLogDAO;
 
     @Autowired
     private Mapping mapping;
@@ -59,7 +61,7 @@ public class CropServiceImpl implements CropService {
     @Override
     public void updateCrops(String id, CropDTO cropDTO) {
         Optional<CropEntity> byId = cropDAO.findById(id);
-        if (!byId.isPresent()){
+        if (!byId.isPresent()) {
             throw new CropNotFoundException("Couldn't find the crop!");
         } else {
             CropEntity cropEntity = byId.get();
@@ -77,10 +79,17 @@ public class CropServiceImpl implements CropService {
             }
             cropEntity.setField(fieldEntityOpt.get());
 
-            // Save the updated cropEntity back to the database
-            cropDAO.save(cropEntity);
+            if (cropDTO.getLogCode() != null) {
+                // If you want to update multiple fields, you would need to use findAllById
+                List<MonitoringLogEntity> logEntities = monitoringLogDAO.findAllById(cropDTO.getLogCode());
+                cropEntity.setLogEntities(logEntities);
+            }
+
+                // Save the updated cropEntity back to the database
+                cropDAO.save(cropEntity);
+            }
         }
-    }
+
 
 
     @Override
