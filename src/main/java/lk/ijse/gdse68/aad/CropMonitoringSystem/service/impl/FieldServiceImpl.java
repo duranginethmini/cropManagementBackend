@@ -5,17 +5,13 @@ import lk.ijse.gdse68.aad.CropMonitoringSystem.customObj.FieldResponse;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dao.EquipmentDAO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dao.FieldDAO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dao.StaffDAO;
-import lk.ijse.gdse68.aad.CropMonitoringSystem.dto.EquipmentDTO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.dto.FieldDTO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.entity.*;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.CropNotFoundException;
-import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.DataPersistentException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.FieldNotFoundException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.service.FieldService;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.util.AppUtil;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.util.Mapping;
-import org.locationtech.jts.geom.GeometryFactory;
-import org.locationtech.jts.geom.Point;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
