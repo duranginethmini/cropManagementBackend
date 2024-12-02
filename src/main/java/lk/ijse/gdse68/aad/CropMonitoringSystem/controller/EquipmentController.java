@@ -6,6 +6,7 @@ import lk.ijse.gdse68.aad.CropMonitoringSystem.dto.EquipmentDTO;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.EquipmentNotFoundException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.service.EquipmentService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -16,6 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/equipment")
+@CrossOrigin("*")
 @RequiredArgsConstructor
 public class EquipmentController {
      private final EquipmentService equipmentService;
