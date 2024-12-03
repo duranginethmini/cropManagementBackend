@@ -16,6 +16,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/vehicles")
+@CrossOrigin(origins = "http://127.0.0.1:5500", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH, RequestMethod.OPTIONS})
 @RequiredArgsConstructor
 public class VehicleController {
     @Autowired
@@ -43,13 +44,13 @@ public class VehicleController {
     }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateVehicle(@PathVariable("id") String id, @RequestBody VehicleDTO vehicleDTO) {
+    @PatchMapping(value = "/{vehicleCode}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateVehicle(@PathVariable("vehicleCode") String vehicleCode, @RequestBody VehicleDTO vehicleDTO) {
         try {
-            if (vehicleDTO == null && (id == null || vehicleDTO.equals(""))) {
+            if (vehicleDTO == null && (vehicleCode == null || vehicleDTO.equals(""))) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            vehicleService.updateVehicles(id, vehicleDTO);
+            vehicleService.updateVehicles(vehicleCode, vehicleDTO);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
         } catch (VehicleNotFoundException e) {
@@ -60,10 +61,10 @@ public class VehicleController {
         }
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteVehicle(@PathVariable("id") String id) {
+    @DeleteMapping(value = "/{equipmentCode}")
+    public ResponseEntity<Void> deleteVehicle(@PathVariable("equipmentCode") String equipmentCode) {
         try {
-            vehicleService.deleteVehicle(id);
+            vehicleService.deleteVehicle(equipmentCode);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (VehicleNotFoundException e) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

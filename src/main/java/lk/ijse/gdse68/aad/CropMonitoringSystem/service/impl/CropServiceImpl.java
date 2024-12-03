@@ -37,7 +37,6 @@ public class CropServiceImpl implements CropService {
     private Mapping mapping;
     @Override
     public void addCrops(CropDTO cropDTO) {
-        cropDTO.setCropCode(AppUtil.createOrderId());
         CropEntity add = cropDAO.save(mapping.convertToEntity(cropDTO));
         if (add == null && add.getCropCode()== null){
             throw new DataPersistentException("error occurred during crop persisting!");

@@ -20,6 +20,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/crops")
+@CrossOrigin(origins = "http://127.0.0.1:5500", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH, RequestMethod.OPTIONS})
 @RequiredArgsConstructor
 public class CropController {
 
@@ -29,6 +30,7 @@ public class CropController {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<Void> addCrop(
+            @RequestParam("cropCode") String cropCode,
             @RequestParam("commonName") String commonName,
             @RequestParam("scientificName") String scientificName,
             @RequestParam("image")MultipartFile image,
@@ -39,6 +41,7 @@ public class CropController {
         try {
             String base64Image = AppUtil.toBase64Image(image);
             CropDTO cropDTO = new CropDTO();
+            cropDTO.setCropCode(cropCode);
             cropDTO.setCommonName(commonName);
             cropDTO.setScientificName(scientificName);
             cropDTO.setImage(base64Image);
@@ -60,8 +63,8 @@ public class CropController {
         return cropService.getAllCropsById();
     }
 
-    @PutMapping (value = "/{id}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity <Void> updateCrops (@PathVariable ("id") String id ,
+    @PutMapping (value = "/{cropCode}",consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
+    public ResponseEntity <Void> updateCrops (@PathVariable ("cropCode") String cropCode ,
                                              @RequestParam("commonName") String commonName,
                                              @RequestParam ("scientificName") String scientificName,
                                              @RequestParam("image") MultipartFile image,
@@ -82,7 +85,7 @@ public class CropController {
             cropDTO.setCropSeason(cropSeason);
             cropDTO.setFieldCode(fieldCode);
             cropDTO.setLogCode(logCode);
-            cropService.updateCrops(id,cropDTO);
+            cropService.updateCrops(cropCode,cropDTO);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (CropNotFoundException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -92,10 +95,10 @@ public class CropController {
 
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteCrops (@PathVariable ("id")String id){
+    @DeleteMapping(value = "/{cropCode}")
+    public ResponseEntity<Void> deleteCrops (@PathVariable ("cropCode")String cropCode){
         try {
-            cropService.deleteCrops(id);
+            cropService.deleteCrops(cropCode);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (CropNotFoundException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -104,8 +107,8 @@ public class CropController {
         }
     }
 
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public CropResponse getCropsById(@PathVariable ("id") String id){
-        return cropService.getSelectedCrops(id);
+    @GetMapping(value = "/{cropCode}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public CropResponse getCropsById(@PathVariable ("cropCode") String cropCode){
+        return cropService.getSelectedCrops(cropCode);
     }
 }

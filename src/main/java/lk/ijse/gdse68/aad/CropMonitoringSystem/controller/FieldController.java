@@ -25,6 +25,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/field")
+@CrossOrigin(origins = "http://127.0.0.1:5500", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH, RequestMethod.OPTIONS})
 @RequiredArgsConstructor
 public class FieldController {
 
@@ -36,6 +37,7 @@ public class FieldController {
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
 
     public ResponseEntity<String> saveField(
+            @RequestParam("fieldCode")String fieldCode,
             @RequestParam("fieldName") String fieldName,
             @RequestParam("fieldSize") double fieldSize,
             @RequestParam("latitude") double latitude,
@@ -59,6 +61,7 @@ public class FieldController {
 
             // Build DTO
             FieldDTO buildFieldDTO = new FieldDTO();
+            buildFieldDTO.setFieldCode(fieldCode);
             buildFieldDTO.setFieldName(fieldName);
             buildFieldDTO.setFieldSize(fieldSize);
             buildFieldDTO.setFieldLocation(new Point((int) latitude, (int) longitude));

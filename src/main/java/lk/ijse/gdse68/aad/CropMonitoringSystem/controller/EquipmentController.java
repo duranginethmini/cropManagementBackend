@@ -17,7 +17,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/equipment")
-@CrossOrigin("*")
+@CrossOrigin(origins = "http://127.0.0.1:5500", allowedHeaders = "*", methods = {RequestMethod.GET, RequestMethod.POST, RequestMethod.PUT, RequestMethod.DELETE, RequestMethod.PATCH, RequestMethod.OPTIONS})
 @RequiredArgsConstructor
 public class EquipmentController {
      private final EquipmentService equipmentService;
@@ -44,13 +44,13 @@ public class EquipmentController {
      }
 
     @ResponseStatus(HttpStatus.NO_CONTENT)
-    @PatchMapping(value = "/{id}", consumes = MediaType.APPLICATION_JSON_VALUE)
-    public ResponseEntity<Void> updateEquipment(@PathVariable("id") String id, @RequestBody EquipmentDTO equipmentDTO) {
+    @PatchMapping(value = "/{equipmentCode}", consumes = MediaType.APPLICATION_JSON_VALUE)
+    public ResponseEntity<Void> updateEquipment(@PathVariable("equipmentCode") String equipmentCode, @RequestBody EquipmentDTO equipmentDTO) {
         try {
-            if (equipmentDTO == null && (id == null || equipmentDTO.equals(""))) {
+            if (equipmentDTO == null && (equipmentCode == null || equipmentDTO.equals(""))) {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
-            equipmentService.updateEquipment(id, equipmentDTO);
+            equipmentService.updateEquipment(equipmentCode, equipmentDTO);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
         } catch (EquipmentNotFoundException e) {
@@ -61,10 +61,10 @@ public class EquipmentController {
         }
     }
 
-    @DeleteMapping(value = "/{id}")
-    public ResponseEntity<Void> deleteEquipment(@PathVariable("id")String id){
+    @DeleteMapping(value = "/{equipmentCode}")
+    public ResponseEntity<Void> deleteEquipment(@PathVariable("equipmentCode")String equipmentCode){
          try {
-             equipmentService.deleteEquipment(id);
+             equipmentService.deleteEquipment(equipmentCode);
              return new ResponseEntity<>(HttpStatus.NO_CONTENT);
          }catch (EquipmentNotFoundException e){
              return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -73,8 +73,8 @@ public class EquipmentController {
          }
     }
 
-    @GetMapping(value = "/{id}",produces = MediaType.APPLICATION_JSON_VALUE)
-    public EquipmentResponse getEquipmentById(@PathVariable("id")String id){
-         return equipmentService.getSelectedEquipment(id);
+    @GetMapping(value = "/{equipmentCode}",produces = MediaType.APPLICATION_JSON_VALUE)
+    public EquipmentResponse getEquipmentById(@PathVariable("equipmentCode")String equipmentCode){
+         return equipmentService.getSelectedEquipment(equipmentCode);
     }
 }

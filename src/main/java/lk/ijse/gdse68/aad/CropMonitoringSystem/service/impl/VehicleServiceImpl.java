@@ -26,7 +26,6 @@ public class VehicleServiceImpl implements VehicleService {
     private Mapping mapping;
     @Override
     public void addVehicles(VehicleDTO vehicleDTO) {
-        vehicleDTO.setVehicleCode(AppUtil.createVehicleId());
         VehicleEntity save = vehicleDAO.save(mapping.convertToEntity(vehicleDTO));
         if (save == null && save.getVehicleCode()==null){
             throw new DataPersistentException("Error occurred during vehicle data persistent! ");

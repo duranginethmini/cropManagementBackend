@@ -26,7 +26,6 @@ public class EquipmentServiceImpl implements EquipmentService {
     private Mapping mapping;
     @Override
     public void addEquipments(EquipmentDTO equipmentDTO) {
-        equipmentDTO.setEquipmentCode(AppUtil.createEquipmentId());
         EquipmentEntity save = equipmentDAO.save(mapping.convertToEntity(equipmentDTO));
         if (save == null && save.getEquipmentCode()==null){
             throw  new DataPersistentException("Couldn't found the equipment");

@@ -12,7 +12,6 @@ import java.util.List;
 @NoArgsConstructor
 @Data
 public class FieldDTO implements SuperDTO, FieldResponse {
-
     private String fieldCode;
     private String fieldName;
     private Point fieldLocation;

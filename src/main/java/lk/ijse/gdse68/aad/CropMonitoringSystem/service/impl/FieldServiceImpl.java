@@ -36,7 +36,6 @@ public class FieldServiceImpl implements FieldService {
 
 @Override
 public String addFields(FieldDTO fieldDTO) {
-    fieldDTO.setFieldCode(AppUtil.createFieldId());
     FieldEntity save = fieldDAO.save(mapping.convertToEntity(fieldDTO));
 
     // Check if saving failed or if the field code is null

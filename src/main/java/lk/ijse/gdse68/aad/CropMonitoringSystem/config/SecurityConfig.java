@@ -32,31 +32,17 @@ public class SecurityConfig {
     private final UserService userService;
     private final JWTConfig jwtConfigFilter;
 
-    // CORS configuration
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration corsConfig = new CorsConfiguration();
-        corsConfig.setAllowedOrigins(List.of("http://127.0.0.1:5500"));  // Your frontend origin
-        corsConfig.setAllowedMethods(List.of("GET", "POST", "PUT", "DELETE", "PATCH"));
-        corsConfig.setAllowedHeaders(List.of("Authorization", "Content-Type"));
-        corsConfig.setAllowCredentials(true);  // Allow credentials if needed
-
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", corsConfig);
-        return source;
-    }
     //Config filter chain
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http.csrf(AbstractHttpConfigurer::disable)
-                .authorizeRequests(req ->
-                        req.requestMatchers("/api/v1/auth/**").permitAll()  // Public endpoints
-                                .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()  // Allow OPTIONS method
-                                .anyRequest().authenticated())  // Other requests require authentication
+                .authorizeRequests( req ->
+                        req.requestMatchers("/**").permitAll()
+                                .anyRequest()
+                                .authenticated())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authenticationProvider(authenticationProvider())
-                .addFilterBefore(jwtConfigFilter, UsernamePasswordAuthenticationFilter.class);  // JWT filter
-
+                .addFilterBefore(jwtConfigFilter, UsernamePasswordAuthenticationFilter.class);
         return http.build();
     }
 
@@ -80,5 +66,5 @@ public class SecurityConfig {
     public AuthenticationManager authenticationManager(AuthenticationConfiguration configuration) throws Exception {
         return configuration.getAuthenticationManager();
     }
-
 }
+
