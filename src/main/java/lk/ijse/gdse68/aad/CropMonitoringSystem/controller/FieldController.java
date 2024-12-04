@@ -71,7 +71,7 @@ public class FieldController {
 
             // Save field
             fieldService.addFields(buildFieldDTO);
-
+            logger.info("Field save successfully!");
             return new ResponseEntity<>(HttpStatus.CREATED);
         } catch (DataPersistentException e) {
             return new ResponseEntity<>("Error saving field data", HttpStatus.BAD_REQUEST);
@@ -116,6 +116,7 @@ public class FieldController {
             fieldDTO.setEquipmentCode(equipmentCode);
             fieldDTO.setStaffId(staffId);
             fieldService.updateField(id,fieldDTO);
+            logger.info("Update field successfully!");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         } catch (IOException e) {
             throw new RuntimeException(e);
@@ -133,8 +134,10 @@ public class FieldController {
     public ResponseEntity <FieldResponse> deleteFields (@PathVariable ("id") String id){
         try {
             fieldService.deleteField(id);
+            logger.info("deleted field");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (FieldNotFoundException e){
+            logger.error("There was an error during field delete");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);

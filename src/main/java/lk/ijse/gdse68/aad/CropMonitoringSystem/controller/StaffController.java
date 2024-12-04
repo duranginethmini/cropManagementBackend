@@ -8,6 +8,8 @@ import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.EquipmentNotFoundExcept
 import lk.ijse.gdse68.aad.CropMonitoringSystem.exception.StaffNotFoundException;
 import lk.ijse.gdse68.aad.CropMonitoringSystem.service.StaffService;
 import lombok.RequiredArgsConstructor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -23,6 +25,7 @@ import java.util.List;
 public class StaffController {
     @Autowired
     private final StaffService staffService;
+    static Logger logger = LoggerFactory.getLogger(StaffController.class);
 
     @PostMapping(consumes = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<Void> addStaff(@RequestBody StaffDTO staffDTO) {
@@ -32,8 +35,10 @@ public class StaffController {
             try {
                 System.out.println("Staff saved");
                 staffService.addStaffMembers(staffDTO);
+                logger.info("Staff saved successfully!");
                 return new ResponseEntity<>(HttpStatus.CREATED);
             } catch (StaffNotFoundException e) {
+                logger.error("There was an error popped up during persisting of staff");
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             } catch (Exception e) {
                 return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -52,6 +57,7 @@ public class StaffController {
                 return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
             }
             staffService.updateStaff(id, staffDTO);
+            logger.info("Update staff successfully!");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 
         } catch (StaffNotFoundException e) {
@@ -70,6 +76,7 @@ public class StaffController {
     public ResponseEntity <Void> deleteStaff (@PathVariable ("id") String id){
         try {
             staffService.deleteStaff(id);
+            logger.info("Deleted staff");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (StaffNotFoundException e){
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);

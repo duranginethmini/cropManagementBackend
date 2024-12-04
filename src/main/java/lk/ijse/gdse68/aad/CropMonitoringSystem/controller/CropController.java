@@ -49,6 +49,7 @@ public class CropController {
             cropDTO.setCropSeason(cropSeason);
             cropDTO.setFieldCode(fieldCode);
             cropService.addCrops(cropDTO);
+            logger.info("Added crop successfully!!");
             return new ResponseEntity<>(HttpStatus.CREATED);
         }catch (DataPersistentException e){
             logger.error("There was a error while updating");
@@ -85,9 +86,11 @@ public class CropController {
             cropDTO.setCropSeason(cropSeason);
             cropDTO.setFieldCode(fieldCode);
             cropDTO.setLogCode(logCode);
+            logger.info("updated crop successfully!");
             cropService.updateCrops(cropCode,cropDTO);
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (CropNotFoundException e){
+            logger.error("There was an error occurred during updating");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
@@ -99,8 +102,10 @@ public class CropController {
     public ResponseEntity<Void> deleteCrops (@PathVariable ("cropCode")String cropCode){
         try {
             cropService.deleteCrops(cropCode);
+            logger.info("Delete successful");
             return new ResponseEntity<>(HttpStatus.NO_CONTENT);
         }catch (CropNotFoundException e){
+            logger.error("There is no such crop with cropCode");
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }catch (Exception e){
             return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
